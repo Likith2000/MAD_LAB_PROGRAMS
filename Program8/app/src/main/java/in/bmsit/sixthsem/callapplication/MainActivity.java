@@ -58,102 +58,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        b0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"0";
-                phone.setText(phoneNum);
-            }
-        });
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"1";
-                phone.setText(phoneNum);
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"2";
-                phone.setText(phoneNum);
-            }
-        });
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"3";
-                phone.setText(phoneNum);
-            }
-        });
-        b4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"4";
-                phone.setText(phoneNum);
-            }
-        });
-        b5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"5";
-                phone.setText(phoneNum);
-            }
-        });
-        b6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"6";
-                phone.setText(phoneNum);
-            }
-        });
-        b7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"7";
-                phone.setText(phoneNum);
-            }
-        });
-        b8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"8";
-                phone.setText(phoneNum);
-            }
-        });
-        b9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"9";
-                phone.setText(phoneNum);
-            }
-        });
-        bStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"*";
-                phone.setText(phoneNum);
-            }
-        });
-        bHash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneNum = phone.getText().toString();
-                phoneNum = phoneNum+"#";
-                phone.setText(phoneNum);
-            }
-        });
         bDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,4 +68,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void addData(View V){
+        phoneNum = phone.getText().toString();
+        phoneNum = phoneNum + V.getTag().toString();
+        phone.setText(phoneNum);
+    }
 }
