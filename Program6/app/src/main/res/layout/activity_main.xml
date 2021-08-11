@@ -22,6 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="500dp"
         android:layout_marginBottom="590dp"
+        android:onClick="parsejson"
         android:text="Parse JSON" />
 
     <ScrollView
@@ -59,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="570dp"
-        android:onClick="parseXML"
+        android:onClick="parsexml"
         android:text="Parse XML" />
 
 

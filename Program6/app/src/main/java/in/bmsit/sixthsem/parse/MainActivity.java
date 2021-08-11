@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,74 +26,75 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class MainActivity extends AppCompatActivity {
-    Button bJSON;
     TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        bJSON = findViewById(R.id.bJSON);
         tv = findViewById(R.id.outputDisplay);
-        bJSON.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String json;
-                StringBuilder sb = new StringBuilder();
-                try {
-                    InputStream is = getAssets().open("cityParser.json");
-                    int size = is.available()+1;
-                    byte[] buff = new byte[size];
-                    is.read(buff);
-                    json = new String(buff,UTF_8);
-                    JSONArray ja = new JSONArray(json);
-                    sb.append("JSON Data\n----------\n");
-                    for (int i = 0; i < ja.length(); ++i){
-                        JSONObject jo = ja.getJSONObject(i);
-                        sb.append("City Name:").append(jo.getString("City_Name")).append("\n");
-                        sb.append("Latitude:").append(jo.getString("Latitude")).append("\n");
-                        sb.append("Longitude:").append(jo.getString("Longitude")).append("\n");
-                        sb.append("Temperature:").append(jo.getString("Temperature")).append("\n");
-                        sb.append("Humidity:").append(jo.getString("Humidity")).append("\n\n");
-                        tv.setText(sb.toString());
-//                        is.close();
-                    }
-                } catch (IOException | JSONException e) {
-                    tv.setText("File not found");
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
-    public void parseXML(View V){
-        String xml;
+    public void parsexml(View V)
+    {
         try {
             InputStream is = getAssets().open("cityParserXML.xml");
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document d = db.parse(is);
-            StringBuilder sb = new StringBuilder();
-            sb.append("XML Data\n----------\n");
-            NodeList nl = d.getElementsByTagName("City");
-            for (int i= 0; i < nl.getLength() ; ++i){
-                Node n = nl.item(i);
-                if(n.getNodeType() == Node.ELEMENT_NODE){
-                    Element l = (Element)n;
-                    sb.append("City Name:").append(getValue("Name",l)).append("\n");
-                    sb.append("Latitude:").append(getValue("Latitude",l)).append("\n");
-                    sb.append("Longitude:").append(getValue("Longitude",l)).append("\n");
-                    sb.append("Temperature:").append(getValue("Temperature",l)).append("\n");
-                    sb.append("Humidity:").append(getValue("Humidity",l)).append("\n\n");
-                }
-            }
-            tv.setText(sb.toString());
-        } catch (Exception e) {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(is);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("XML DATA");
+            stringBuilder.append("\n---------");
+            NodeList nodeList = document.getElementsByTagName("City");
+            for (int i = 0; i < nodeList.getLength(); i++)
+            {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    stringBuilder.append("\nName: ").append(getValue("Name", element));
+                    stringBuilder.append("\nLatitude: ").append(getValue("Latitude", element));
+                    stringBuilder.append("\nLongitude: ").append(getValue("Longitude", element));
+                    stringBuilder.append("\nTemperature: ").append(getValue("Temperature", element));
+                    stringBuilder.append("\nHumidity: ").append(getValue("Humidity", element));
+                    stringBuilder.append("\n----------");
+                }}
+            tv.setText(stringBuilder.toString());
+        }catch (Exception e){
             e.printStackTrace();
+            Toast.makeText(MainActivity.this,"Error Parsing XML",Toast.LENGTH_LONG).show();
         }
     }
 
-    private String getValue(String t, Element e){
-        return e.getElementsByTagName(t).item(0).getChildNodes().item(0).getNodeValue();
+    public void parsejson(View V){
+        String json;
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            InputStream is = getAssets().open("cityParser.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            json = new String(buffer, StandardCharsets.UTF_8);
+            JSONArray jsonArray = new JSONArray(json);
+            stringBuilder.append("JSON DATA");
+            stringBuilder.append("\n--------");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                stringBuilder.append("\nName: ").append(jsonObject.getString("City_Name"));
+                stringBuilder.append("\nLatitude: ").append(jsonObject.getString("Latitude"));
+                stringBuilder.append("\nLongitude: ").append(jsonObject.getString("Longitude"));
+                stringBuilder.append("\nTemperature: ").append(jsonObject.getString("Temperature"));
+                stringBuilder.append("\nHumidity: ").append(jsonObject.getString("Humidity"));
+                stringBuilder.append("\n----------");
+            }
+            tv.setText(stringBuilder.toString());
+            is.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this,"Error in reading",Toast.LENGTH_LONG).show();
+        }
     }
-
+    private String getValue(String tag, Element element)
+    {
+        return element.getElementsByTagName(tag).item(0).getChildNodes().item(0).getNodeValue();
+    }
 }
